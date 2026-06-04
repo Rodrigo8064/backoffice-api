@@ -1,0 +1,19 @@
+[project]
+name = "backoffice-api"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "rodrigo8064",email = "rodrigooliveiradel@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "django-ninja (>=1.6.2,<2.0.0)",
+    "django-mptt (>=0.18.0,<0.19.0)",
+    "python-decouple (>=3.8,<4.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
