@@ -7,10 +7,7 @@ class Category(MPTTModel):
     url = models.CharField(max_length=4, unique=True, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     notes = models.CharField(
-        max_length=50,
-        default='Criada',
-        blank=True,
-        null=True
+        max_length=50, default='Criada', blank=True, null=True
     )
     parent = TreeForeignKey(
         'self',
@@ -29,13 +26,11 @@ class Category(MPTTModel):
         ancestors = self.get_ancestors(include_self=True)
 
         return ' > '.join([anc.name for anc in ancestors])
-    
+
     @property
     def full_path(self):
         ancestors = self.get_ancestors(include_self=True)
-        return ' > '.join(
-            anc.name for anc in ancestors
-        )
+        return ' > '.join(anc.name for anc in ancestors)
 
 
 class Family(models.Model):

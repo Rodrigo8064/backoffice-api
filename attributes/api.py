@@ -3,15 +3,16 @@ from typing import List
 
 from django.shortcuts import get_object_or_404
 from ninja import Router
+from ninja.pagination import PageNumberPagination, paginate
 
 from category.models import Family
+
 from .models import Attribute
 from .schemas import (
     AttributePublicSchema,
     AttributeSchema,
-    AttributeUpdateSchema
+    AttributeUpdateSchema,
 )
-
 
 router = Router(tags=['attributes'])
 
@@ -19,12 +20,9 @@ router = Router(tags=['attributes'])
 @router.post(
     path='/',
     response={HTTPStatus.CREATED: AttributePublicSchema},
-    summary='Adicionar atributo'
+    summary='Adicionar atributo',
 )
-def create_attribute(
-    request,
-    attribute: AttributeSchema
-):
+def create_attribute(request, attribute: AttributeSchema):
     families_id = attribute.families_id
 
     new_attribute = Attribute.objects.create(
@@ -33,18 +31,17 @@ def create_attribute(
         is_active=attribute.is_active,
     )
 
-    new_attribute.families.set(
-        Family.objects.filter(id__in=families_id)
-    )
+    new_attribute.families.set(Family.objects.filter(id__in=families_id))
 
     return new_attribute
 
 
 @router.get(
-        path='/',
-        response={HTTPStatus.OK: List[AttributePublicSchema]},
-        summary='Listar atributos'
+    path='/',
+    response={HTTPStatus.OK: List[AttributePublicSchema]},
+    summary='Listar atributos',
 )
+@paginate(PageNumberPagination)
 def list_attributes(
     request,
 ):
@@ -56,15 +53,11 @@ def list_attributes(
 @router.get(
     path='/{attribute_id}',
     response={HTTPStatus.OK: AttributePublicSchema},
-    summary='Buscar atributo por id'
+    summary='Buscar atributo por id',
 )
-def get_attribute(
-    request,
-    attribute_id: int
-):
+def get_attribute(request, attribute_id: int):
     attribute = get_object_or_404(
-        Attribute.objects.prefetch_related('families'),
-        id=attribute_id
+        Attribute.objects.prefetch_related('families'), id=attribute_id
     )
     return attribute
 
@@ -75,9 +68,7 @@ def get_attribute(
     summary='Atualizar atributo',
 )
 def update_attribute(
-    request,
-    attribute_id: int,
-    attribute_update: AttributeUpdateSchema
+    request, attribute_id: int, attribute_update: AttributeUpdateSchema
 ):
     attribute = get_object_or_404(
         Attribute.objects.prefetch_related('families'), id=attribute_id
@@ -91,9 +82,7 @@ def update_attribute(
     attribute.save()
 
     if families_id is not None:
-        attribute.families.set(
-            Family.objects.filter(id__in=families_id)
-        )
+        attribute.families.set(Family.objects.filter(id__in=families_id))
 
     return attribute
 
@@ -103,10 +92,6 @@ def update_attribute(
     response={HTTPStatus.NO_CONTENT: None},
     summary='Deletar atributo',
 )
-def delete_attributo(
-    request,
-    attribute_id: int
-):
+def delete_attributo(request, attribute_id: int):
     attribute = get_object_or_404(Attribute, id=attribute_id)
     attribute.delete()
-    return

@@ -5,6 +5,7 @@ from pydantic import ConfigDict, Field
 
 from category.schemas import FamilyPublicSchema
 
+
 class AttributeSchema(Schema):
     name: str
     expected_value: None | str = None

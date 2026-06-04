@@ -135,3 +135,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+JWT_ALGORITHM = config('JWT_ALGORITHM', 'algorithm')
+JWT_EXPIRATION_MINUTES = config('JWT_EXPIRATION_MINUTES', '')
+
+NINJA_PAGINATION_PER_PAGE = 15

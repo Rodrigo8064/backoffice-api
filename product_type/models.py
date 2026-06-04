@@ -1,7 +1,4 @@
 from django.db import models
-
-
-from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
 
@@ -25,10 +22,8 @@ class ProductType(MPTTModel):
         ancestors = self.get_ancestors(include_self=True)
 
         return ' > '.join([anc.name for anc in ancestors])
-    
+
     @property
     def full_path(self):
         ancestors = self.get_ancestors(include_self=True)
-        return ' > '.join(
-            anc.name for anc in ancestors
-        )
+        return ' > '.join(anc.name for anc in ancestors)
