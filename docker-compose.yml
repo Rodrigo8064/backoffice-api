@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-backoffice
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+    networks:
+      - portfolio-net
+    volumes:
+      - static_files:/home/backoffice/staticfiles
+
+  fix-permissions:
+    image: alpine
+    command: chown -R 1000:1000 /staticfiles
+    volumes:
+      - static_files:/staticfiles
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: sh -c "poetry run python manage.py migrate --noinput && poetry run python manage.py collectstatic --noinput --clear"
+    depends_on:
+      fix-permissions:
+        condition: service_completed_successfully
+      db:
+        condition: service_started
+    networks:
+      - portfolio-net
+    volumes:
+      - static_files:/home/backoffice/staticfiles
+
+  db:
+    image: postgres:17.6-trixie
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - portfolio-net
+
+volumes:
+  data:
+  static_files:
+
+networks:
+  portfolio-net:
+    name: portfolio-net
+    external: true
