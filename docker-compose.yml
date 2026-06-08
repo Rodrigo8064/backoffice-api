@@ -3,16 +3,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: api-backoffice
     depends_on:
       migrations:
         condition: service_completed_successfully
     env_file:
       - .env
-    networks:
-      - portfolio-net
     volumes:
       - static_files:/home/backoffice/staticfiles
+    ports:
+      - "8003:8000"
 
   fix-permissions:
     image: alpine
@@ -32,8 +31,6 @@ services:
         condition: service_completed_successfully
       db:
         condition: service_started
-    networks:
-      - portfolio-net
     volumes:
       - static_files:/home/backoffice/staticfiles
 
@@ -45,14 +42,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - data:/var/lib/postgresql/data
-    networks:
-      - portfolio-net
 
 volumes:
   data:
   static_files:
-
-networks:
-  portfolio-net:
-    name: portfolio-net
-    external: true
