@@ -26,4 +26,4 @@ RUN poetry install \
 
 COPY --chown=${USERNAME}:${USERNAME} . .
 
-CMD ["poetry", "run", "gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2"]
+CMD ["poetry", "run", "gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8003", "--workers", "2"]

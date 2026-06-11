@@ -10,8 +10,6 @@ services:
       - .env
     volumes:
       - static_files:/home/backoffice/staticfiles
-    ports:
-      - "8003:8000"
 
   fix-permissions:
     image: alpine
