@@ -26,4 +26,6 @@ RUN poetry install \
 
 COPY --chown=${USERNAME}:${USERNAME} . .
 
-CMD ["poetry", "run", "gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8003", "--workers", "2"]
+CRUN chmod +x entrypoint.sh
+EXPOSE 8003
+CMD ["./entrypoint.sh"]
