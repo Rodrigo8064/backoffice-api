@@ -7,10 +7,10 @@ echo "  Iniciando aplicação..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 echo "► Aplicando migrations..."
-python manage.py migrate --noinput
+poetry run python manage.py migrate --noinput
 
 echo "► Coletando arquivos estáticos..."
-python manage.py collectstatic --noinput --clear
+poetry run python manage.py collectstatic --noinput --clear
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  Iniciando Gunicorn..."
