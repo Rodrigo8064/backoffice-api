@@ -18,7 +18,7 @@ Use as credenciais abaixo para autenticar:
 | campo | valor |
 |-------|-------|
 | email | recrutador@teste.com |
-| senha | teste123 |
+| senha | recte123 |
 
 **Passo a passo:**
 1. Faça POST /api/auth/token com as credenciais acima
