@@ -16,7 +16,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo "  Iniciando Gunicorn..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-exec gunicorn app.wsgi:application \
+exec poetry run gunicorn app.wsgi:application \
     --bind 0.0.0.0:8003 \
     --workers 1 \
     --threads 2 \
