@@ -74,7 +74,7 @@ def get_product_type_by_name(request, product_type_name: str):
 
 @router.put(
     path='/{product_type_id}',
-    response={HTTPStatus.CREATED: ProductTypePublicSchema},
+    response={HTTPStatus.OK: ProductTypePublicSchema},
     summary='Atualizar tipo de produto',
 )
 def update_product_type(

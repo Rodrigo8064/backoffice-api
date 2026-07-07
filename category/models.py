@@ -1,7 +1,7 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
- 
+
 class Category(MPTTModel):
     name = models.CharField(max_length=200, unique=True, db_index=True)
     url = models.CharField(max_length=4, unique=True, null=True, blank=True)

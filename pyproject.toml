@@ -14,7 +14,9 @@ dependencies = [
     "pyjwt (>=2.13.0,<3.0.0)",
     "psycopg[binary] (>=3.3.4,<4.0.0)",
     "gunicorn (>=26.0.0,<27.0.0)",
-    "whitenoise (>=6.12.0,<7.0.0)"
+    "whitenoise (>=6.12.0,<7.0.0)",
+    "pytest-asyncio (>=1.4.0,<2.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)"
 ]
 
 
@@ -29,7 +31,8 @@ dev = [
     "taskipy (>=1.14.1,<2.0.0)",
     "pytest (>=9.0.3,<10.0.0)",
     "pytest-django (>=4.12.0,<5.0.0)",
-    "pytest-cov (>=7.1.0,<8.0.0)"
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "pytest-env (>=1.6.0,<2.0.0)"
 ]
 
 [tool.ruff]
@@ -78,7 +81,15 @@ preview = true
 quote-style = 'single'
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "app.settings"
+DJANGO_SETTINGS_MODULE = "core.settings"
+env = [
+    "DJANGO_ENV=test",
+    "SECRET_KEY=uma-chave-qualquer-para-teste_grande",
+    "DEBUG=True",
+    "ALLOWED_HOSTS=localhost,127.0.0.1",
+    "JWT_ALGORITHM=HS256",
+    "JWT_EXPIRATION_MINUTES=30",
+]
 pythonpath = "."
 django_find_project = true
 addopts = "--cov=. --cov-report=term-missing --cov-report=html"
@@ -94,5 +105,5 @@ pre_format = 'ruff check --fix'
 format = 'ruff format'
 run = 'python manage.py runserver 0.0.0.0:8001'
 pre_test = 'task lint'
-test = 'pytest -s -x --cov=labs_wishlist -vv'
+test = 'pytest -s -x --cov=backoffice_api -vv'
 post_test = 'coverage html'
