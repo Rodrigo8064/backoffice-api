@@ -68,7 +68,7 @@ def get_category_by_name(request, category_name: str):
 
 @router.put(
     path='/{category_id}',
-    response={HTTPStatus.CREATED: CategoryPublicSchema},
+    response={HTTPStatus.OK: CategoryPublicSchema},
     summary='Atualizar categoria',
 )
 def update_category(

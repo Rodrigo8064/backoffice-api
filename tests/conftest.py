@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from ninja.testing import TestClient
 
 from authentication.auth import create_jwt_token
+from category.models import Category, Family
 from core.api import api
 from product_type.models import ProductType
 
@@ -49,3 +50,37 @@ def product_type_children(db):
     )
 
     return product_type
+
+
+@pytest.fixture
+def category_father(db):
+    category = Category.objects.create(
+        name='Informatica',
+        url='IN',
+        is_active='True',
+    )
+
+    return category
+
+
+@pytest.fixture
+def category_children(db):
+    category = Category.objects.create(
+        name='Teclado',
+        url='TECL',
+        is_active='True',
+        parent_id=1,
+        notes='Criada',
+    )
+
+    return category
+
+
+@pytest.fixture
+def family(db):
+    family = Family.objects.create(
+        name='Esporte e Lazer',
+        is_active='True',
+    )
+
+    return family
