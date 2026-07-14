@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from ninja.testing import TestClient
 
+from attributes.models import Attribute
 from authentication.auth import create_jwt_token
 from category.models import Category, Family
 from core.api import api
@@ -84,3 +85,14 @@ def family(db):
     )
 
     return family
+
+
+@pytest.fixture
+def attribute(db):
+    attribute = Attribute.objects.create(
+        name='Cor',
+        expected_value='Amarelo',
+        is_active='True',
+    )
+
+    return attribute

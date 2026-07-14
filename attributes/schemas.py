@@ -24,7 +24,7 @@ class AttributePublicSchema(Schema):
 
 
 class AttributeUpdateSchema(Schema):
-    name: None | str
-    expected_value: None | str
+    name: None | str = None
+    expected_value: None | str = None
     is_active: None | bool = True
     families_id: List[int] = []

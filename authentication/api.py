@@ -1,4 +1,4 @@
-from django.contrib.auth import aauthenticate
+from django.contrib.auth import authenticate
 from ninja import Router
 
 from .auth import create_jwt_token
@@ -17,8 +17,8 @@ router = Router(tags=['auth'])
     auth=None,
     summary='Gerar token de acesso',
 )
-async def create_token(request, data: LoginSchema):
-    user = await aauthenticate(username=data.username, password=data.password)
+def create_token(request, data: LoginSchema):
+    user = authenticate(username=data.username, password=data.password)
 
     if user is None:
         return 401, {'error': 'Invalid email or password'}
