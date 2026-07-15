@@ -1,6 +1,9 @@
 import pytest
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.test.utils import setup_databases, teardown_databases
 from ninja.testing import TestClient
+from testcontainers.postgres import PostgresContainer
 
 from attributes.models import Attribute
 from authentication.auth import create_jwt_token
@@ -9,6 +12,32 @@ from core.api import api
 from product_type.models import ProductType
 
 User = get_user_model()
+
+
+@pytest.fixture(scope='session')
+def postgres_container():
+    with PostgresContainer('postgres:17', driver='psycopg') as postgres:
+        yield postgres
+
+
+@pytest.fixture(scope='session')
+def django_db_setup(postgres_container, django_db_blocker):
+    settings.DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': postgres_container.dbname,
+        'USER': postgres_container.username,
+        'PASSWORD': postgres_container.password,
+        'HOST': postgres_container.get_container_host_ip(),
+        'PORT': postgres_container.get_exposed_port(5432),
+    }
+
+    with django_db_blocker.unblock():
+        db_cfg = setup_databases(verbosity=1, interactive=False)
+
+    yield
+
+    with django_db_blocker.unblock():
+        teardown_databases(db_cfg, verbosity=1)
 
 
 @pytest.fixture
